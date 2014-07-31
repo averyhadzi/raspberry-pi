@@ -297,7 +297,7 @@ jQuery(document).ready(function($) {
 
 	(function fetchNews() {
 		$.feedToJson({
-			feed:'http://feeds.nos.nl/nosjournaal?format=rss',
+			feed:'http://news.google.com/news?pz=1&cf=all&ned=us&hl=en&topic=tc&output=rss',
 			//feed:'http://www.nu.nl/feeds/rss/achterklap.rss',
 			//feed:'http://www.nu.nl/feeds/rss/opmerkelijk.rss',
 			success: function(data){
