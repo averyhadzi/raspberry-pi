@@ -83,7 +83,7 @@ jQuery(document).ready(function($) {
         date = date[0] + ' ' + date[1] + ' ' + date[2] + ' ' + date[3];
 
 		$('.date').html(date);
-		$('.time').html(now.format('HH') + ':' + now.format('mm') + '<span class="sec">'+now.format('ss')+'</span>');
+		$('.time').html(now.format('h') + ':' + now.format('mm a') + '<span class="sec">'+now.format('ss')+'</span>');
 
 		setTimeout(function() {
 			updateTime();
@@ -229,17 +229,17 @@ jQuery(document).ready(function($) {
 			// var forecast = 'Min: '+temp_min+'&deg;, Max: '+temp_max+'&deg;';
 			// $('.forecast').updateWithText(forecast, 1000);
 
-			var now = new Date();
-			var sunrise = new Date(json.sys.sunrise*1000).toTimeString().substring(0,5);
-			var sunset = new Date(json.sys.sunset*1000).toTimeString().substring(0,5);
+			// var now = new Date();
+			// var sunrise = new Date(json.sys.sunrise*1000).toTimeString().substring(0,5);
+			// var sunset = new Date(json.sys.sunset*1000).toTimeString().substring(0,5);
 
-			var windString = '<span class="wi wi-strong-wind xdimmed"></span> ' + kmh2beaufort(wind) ;
-			var sunString = '<span class="wi wi-sunrise xdimmed"></span> ' + sunrise;
-			if (json.sys.sunrise*1000 < now && json.sys.sunset*1000 > now) {
-				sunString = '<span class="wi wi-sunset xdimmed"></span> ' + sunset;
-			}
+			// var windString = '<span class="wi wi-strong-wind xdimmed"></span> ' + kmh2beaufort(wind) ;
+			// var sunString = '<span class="wi wi-sunrise xdimmed"></span> ' + sunrise;
+			// if (json.sys.sunrise*1000 < now && json.sys.sunset*1000 > now) {
+			// 	sunString = '<span class="wi wi-sunset xdimmed"></span> ' + sunset;
+			// }
 
-			$('.windsun').updateWithText(windString+' '+sunString, 1000);
+			// $('.windsun').updateWithText(windString+' '+sunString, 1000);
 		});
 
 		setTimeout(function() {
