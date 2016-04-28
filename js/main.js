@@ -2790,7 +2790,7 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
 
 var core = new MotionDetector.Core();
 
-$(document).ready(function(){
+// $(document).ready(function(){
   var day = moment().format('dddd');
   var date = moment().format('MMMM Do, YYYY');
   var time = moment().format('h:mm:ss a');
@@ -2808,80 +2808,64 @@ $(document).ready(function(){
     // var cityId = '5389489'; // Sacramento
 
 
-
-    $.getJSON( 'http://api.openweathermap.org/data/2.5/weather?id=' + cityId + '&APPID=e69ae6c95baa97cda40d37f0159c0f67&units=imperial', function( data ) {
-    var items = [];
-    console.log(data)
-    var weatherTemp = data.main.temp,
-        weatherTempF = Math.round(weatherTemp),
-        weatherID = data.weather[0].id,
-        weatherIconId = data.weather[0].icon,
-        weatherIcon = 'http://openweathermap.org/img/w/' + weatherIconId + '.png',
-        weatherMain = data.weather[0].main,
-        weatherDescription = data.weather[0].description;
-
-
-    // Sunset / Sunrise 
-
-    var zone = 'America/Denver';
-    var sunriseTime = moment.unix(data.sys.sunrise).tz(zone);
-    var sunsetTime = moment.unix(data.sys.sunset).tz(zone);
-    var utcTime = moment.utc();
+      $.getJSON( 'http://api.openweathermap.org/data/2.5/weather?id=' + cityId + '&APPID=e69ae6c95baa97cda40d37f0159c0f67&units=imperial', function( data ) {
+        var items = [];
+        console.log(data)
+        var weatherTemp = data.main.temp,
+            weatherTempF = Math.round(weatherTemp),
+            weatherID = data.weather[0].id,
+            weatherIconId = data.weather[0].icon,
+            weatherIcon = 'http://openweathermap.org/img/w/' + weatherIconId + '.png',
+            weatherMain = data.weather[0].main,
+            weatherDescription = data.weather[0].description;
 
 
-    // if(utcTime > sunriseTime) {
-    //   $('#night').addClass('faded');
-    // } 
-    if(utcTime > sunsetTime) {
-      $('#night, #default, #umbrella').toggleClass('faded');
-    }
+        // Sunset / Sunrise 
 
-    console.log('current ' + moment().format('h:mm a') + ' sunsetUnix ' + moment(sunsetTime).format('h:mm a'))
+        var zone = 'America/Denver';
+        var sunriseTime = moment.unix(data.sys.sunrise).tz(zone);
+        var sunsetTime = moment.unix(data.sys.sunset).tz(zone);
+        var utcTime = moment.utc();
 
-
-    if(weatherDescription.match(/cloud/gi)) {
-      $('#clouds').removeClass('inactive');
-      if($('#default').hasClass('faded')) {
-        $('#umbrella, #default').toggleClass('faded');
-      }
-    } 
-    if (weatherDescription.match(/rain/gi)) {
-      $('.rain').removeClass('inactive');
-      $('#umbrella, #default').toggleClass('faded');
-      createRain();
-    }
-    if (weatherDescription.match(/sun/gi) || weatherDescription.match(/clear/gi) ) {
-      $('.sunny').removeClass('inactive');
-    }
-    if (weatherDescription.match(/snow/gi)) {
-      $('.snow').removeClass('inactive');
-      $('#umbrella, #default').toggleClass('faded');
-      createSnow();
-    }
+        console.log('current ' + moment().format('h:mm a') + ' sunsetUnix ' + moment(sunsetTime).format('h:mm a'))
 
 
-    // function weatherIcon(weatherID) {
-    //     switch (weatherID) { 
-    //         case '211': 
-    //             return 'wi-day-thunderstorm';
-    //             break;  
-    //         case '803': 
-    //             return 'wi-day-cloudy';
-    //             break;  
-    //     }
-    // };
+        if(weatherDescription.match(/cloud/gi)) {
+          $('#clouds').removeClass('inactive');
+          if($('#default').hasClass('faded')) {
+            $('#umbrella, #default').toggleClass('faded');
+          }
+        } 
+        if (weatherDescription.match(/rain/gi)) {
+          $('.rain').removeClass('inactive');
+          $('#umbrella, #default').toggleClass('faded');
+          createRain(weatherDescription);
+        }
+        if (weatherDescription.match(/sun/gi)) {
+          $('.sunny').removeClass('inactive');
+          $('#sunburn, #default').toggleClass('faded');
+        }
+        if (weatherDescription.match(/snow/gi)) {
+          $('.snow').removeClass('inactive');
+          $('#umbrella, #default').toggleClass('faded');
+          createSnow(weatherDescription);
+        }
 
-    var weatherID = weatherID;
-    $('.weatherIcon').addClass(weatherID);
-    $('.weatherIcon img').attr('src', weatherIcon);
-    $('.weatherTemp').html(weatherTempF + '<span>&deg;</span>');
-    $('.weatherMain').text(weatherMain);
-    $('.weatherDescription').text(weatherDescription);
+        if(utcTime > sunsetTime) {
+          $('#night, #default, #umbrella, #sunburn').toggleClass('faded');
+        }
 
-  });
+        var weatherID = weatherID;
+        $('.weatherIcon').addClass(weatherID);
+        $('.weatherIcon img').attr('src', weatherIcon);
+        $('.weatherTemp').html(weatherTempF + '<span>&deg;</span>');
+        // $('.weatherMain').text(weatherMain);
+        $('.weatherMain').text(weatherDescription);
+
+      });
 
   // number of drops created.
-  var nbDrop = 2000; 
+  var nbDrop; 
 
   // function to generate a random number range.
   function randRange( minNum, maxNum) {
@@ -2889,15 +2873,22 @@ $(document).ready(function(){
   }
 
   // function to generate drops
-  function createRain() {
+  function createRain(weatherDescription) {
+    if(weatherDescription.match(/light/gi)) {
+      $('.rain').addClass('light');
+      nbDrop = 100;
+    } else {
+      $('.rain').removeClass('light');
+      nbDrop = 2000;
+    }
 
     for( i=1;i<nbDrop;i++) {
-    var dropLeft = randRange(0,1600);
-    var dropTop = randRange(-1000,1400);
+      var dropLeft = randRange(0,1600);
+      var dropTop = randRange(-1000,1400);
 
-    $('.rain').append('<div class="drop" id="drop'+i+'"></div>');
-    $('#drop'+i).css('left',dropLeft);
-    $('#drop'+i).css('top',dropTop);
+      $('.rain').append('<div class="drop" id="drop'+i+'"></div>');
+      $('#drop'+i).css('left',dropLeft);
+      $('#drop'+i).css('top',dropTop);
     }
 
   }
@@ -2905,7 +2896,14 @@ $(document).ready(function(){
 
 
   // function to generate snow
-  function createSnow() {
+  function createSnow(weatherDescription) {
+    if(weatherDescription.match(/light/gi)) {
+      $('.snow').addClass('light');
+      nbDrop = 100;
+    } else {
+      $('.snow').removeClass('light');
+      nbDrop = 2000;
+    }
 
     for( i=1;i<nbDrop;i++) {
     var dropLeft = randRange(0,2000);
@@ -2924,17 +2922,17 @@ $(document).ready(function(){
   
 
 
-});
+// });
 
-var time = new Date().getTime();
-function refresh() {
-   if(new Date().getTime() - time >= 3600000) 
-       window.location.reload(true);
-   else 
-       setTimeout(refresh, 3600000);
-}
+// var time = new Date().getTime();
+// function refresh() {
+//    if(new Date().getTime() - time >= 3600000) 
+//        window.location.reload(true);
+//    else 
+//        setTimeout(refresh, 3600000);
+// }
 
-setTimeout(refresh, 3600000);
+// setTimeout(refresh, 3600000);
 
 
 
