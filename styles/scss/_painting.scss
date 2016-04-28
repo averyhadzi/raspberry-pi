@@ -1,0 +1,136 @@
+.painting {
+  position: relative;
+  width: 1024px;
+  height: 1240px;
+  margin: 0 auto;
+  text-align: center;
+  overflow: hidden;
+
+  .inactive {
+    display: none;
+  }
+
+  img {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    opacity: 1;
+    // transition: opacity 6s;
+
+    .special {
+      // z-index: -9999;
+    }
+    &.faded {
+      opacity: 0;
+      transition: opacity 6s;
+    }
+  }
+  .eye {
+    position: absolute;
+    background-color: $black;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    z-index: 0;
+  }
+  .smile {
+    position: absolute;
+    width: 100%;
+    opacity: 0;
+    animation: smileFade 6s infinite ease;
+    animation-delay: 10s;
+    animation-direction: alternate;
+    img {
+      display: block;
+    }
+  }
+  .woman {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 390px;
+    left: 225px;
+    .eye__box {
+      position: absolute;
+      top: 0;
+      left: 20px;
+      width: 80px;
+      height: 20px;
+    }
+    .eye {
+      animation: shiftyEye 10s infinite;
+      animation-delay: 3s;
+      animation-direction: alternate;
+      &.left {
+        top: 7px;
+        left: 0;
+      }
+      &.right {
+        top: 11px;
+        right: 0;
+      }
+    }
+    .smile {
+      bottom: 4px;
+    }
+  }
+  .man {
+    width: 120px;
+    height: 120px;
+    position: absolute;
+    top: 285px;
+    right: 256px;
+    .eye__box {
+      position: absolute;
+      top: 0;
+      left: 14px;
+      width: 107px;
+      height: 20px;
+    }
+    .eye {
+      width: 15px;
+      height: 15px;
+      animation: rollingEye 5s infinite;
+      animation-delay: 100s;
+      animation-direction: alternate;
+      &.left {
+        top: 0;
+        left: 0;
+      }
+      &.right {
+        top: -2px;
+        right: 0;
+      }
+    }
+    .smile {
+      bottom: 14px;
+      left: 15px;
+    }
+  }
+}
+
+
+
+@keyframes shiftyEye {
+  0%   { transform: translateX(-5px); }
+  25% { transform: translateX(0px); }
+  50% { transform: translateX(5px); }
+  100% { transform: translateX(0px); }
+}
+
+@keyframes rollingEye {
+  0%   { transform: translate(-20%, 0); }
+  20% { transform: translate(-20%, -25%); }
+  40% { transform: translate(0, -25%); }
+  60% { transform: translate(20%, 25%); }
+  60% { transform: translate(-20%, -25%); }
+  100% { transform: translate(0px, 0px); }
+}
+
+
+@keyframes smileFade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
