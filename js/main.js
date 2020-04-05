@@ -39,7 +39,7 @@
 //   }, errorCallback);
 
 
-var core = new MotionDetector.Core();
+// var core = new MotionDetector.Core();
 
 // $(document).ready(function(){
   var day = moment().format('dddd');
@@ -58,6 +58,24 @@ var core = new MotionDetector.Core();
     // var cityId = '993800'; // Joburg
     // var cityId = '5389489'; // Sacramento
 
+    const username = 'averywolkin@gmail.com';
+    const password = 'fbRb7EKN4nsmxQKtX@Fh';
+    const creds = { username, password };
+
+    fetch('https://api.meural.com/v0/authenticate', {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(creds),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Success:', data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
 
       $.getJSON( 'http://api.openweathermap.org/data/2.5/weather?id=' + cityId + '&APPID=e69ae6c95baa97cda40d37f0159c0f67&units=imperial', function( data ) {
         var items = [];
@@ -184,5 +202,3 @@ var core = new MotionDetector.Core();
 // }
 
 // setTimeout(refresh, 3600000);
-
-
